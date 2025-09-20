@@ -1,0 +1,67 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic reports
+report.*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Dependency directories
+node_modules/
+bower_components/
+jspm_packages/
+web_modules/
+
+# Build output
+dist/
+build/
+lib-cov/
+build/Release
+
+# Caches
+.cache/
+.parcel-cache/
+.eslintcache
+.npm
+
+# Testing
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# REPL history
+.node_repl_history
+
+# Package archives
+*.tgz
+
+# Editors/OS
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Serverless / frameworks
+.serverless/
+.dynamodb/
+
