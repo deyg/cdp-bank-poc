@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+import { pathToFileURL } from 'node:url';
 import { createContaRepositoryPostgresFromEnv } from './adapters/postgres/ContaRepositoryPostgres.js';
 import { buildUseCases } from './core/usecases/buildUseCases.js';
 
@@ -62,7 +63,11 @@ export async function createApp() {
 }
 
 // Bootstrap quando executado diretamente
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isDirect =
+  typeof process.argv[1] === 'string' &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirect) {
   const PORT = Number(process.env.PORT || process.env.API_PORT || 3000);
   const HOST = process.env.HOST || '0.0.0.0';
   const app = await createApp();
