@@ -63,3 +63,11 @@ Estrutura (resumo)
 Docker
 - Subir: `npm run db:up`
 - Derrubar: `npm run db:down`
+
+Links rápidos
+- [VISAO.md](VISAO.md)
+- [Procedimento.md](Procedimento.md)
+
+Recursos adicionais
+- Guia de visão do projeto: veja `VISAO.md`
+- Procedimentos (Docker, Postman, cURL): veja `Procedimento.md`
