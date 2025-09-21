@@ -22,6 +22,17 @@ export async function createApp(deps = {}) {
     }
   });
 
+  app.post('/saldo', async (request, reply) => {
+    try {
+      const { idConta } = request.body ?? {};
+      const result = await usecases.saldo.execute({ idConta });
+      return reply.code(200).send(result);
+    } catch (err) {
+      request.log.warn({ err }, 'Erro em /saldo');
+      return reply.code(400).send({ message: err?.message ?? 'Bad Request' });
+    }
+  });
+
   app.post('/deposito', async (request, reply) => {
     try {
       const { idConta, valor } = request.body ?? {};

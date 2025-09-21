@@ -5,6 +5,17 @@
   },
   "item": [
     {
+      "name": "Saldo",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/saldo", "host": ["{{baseUrl}}"], "path": ["saldo"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\"\n}" }
+      }
+    },
+    {
       "name": "Criar Conta",
       "request": {
         "method": "POST",
@@ -53,4 +64,3 @@
     { "key": "baseUrl", "value": "http://localhost:3000" }
   ]
 }
-

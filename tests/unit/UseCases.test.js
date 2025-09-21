@@ -2,6 +2,21 @@ import { ContaRepositoryMemory } from '../../adapters/memory/ContaRepositoryMemo
 import { buildUseCases } from '../../core/usecases/buildUseCases.js';
 
 describe('Casos de Uso com ContaRepositoryMemory', () => {
+  test('Saldo → retorna saldo atual', async () => {
+    const repo = new ContaRepositoryMemory([{ id: 'c1', saldo: 123 }]);
+    const { saldo } = buildUseCases(repo);
+
+    const result = await saldo.execute({ idConta: 'c1' });
+    expect(result).toEqual({ id: 'c1', saldo: 123 });
+  });
+
+  test('Saldo → erro quando conta não existe', async () => {
+    const repo = new ContaRepositoryMemory([]);
+    const { saldo } = buildUseCases(repo);
+    await expect(saldo.execute({ idConta: 'x' }))
+      .rejects.toThrow('Conta não encontrada');
+  });
+
   test('CriarConta → cria conta com saldo padrão 0', async () => {
     const repo = new ContaRepositoryMemory([]);
     const { criarConta } = buildUseCases(repo);

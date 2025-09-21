@@ -30,6 +30,11 @@ Conexão ao Postgres (variáveis)
    - 400: `{ "message": "<erro>" }`
 
 Endpoints
+- POST `/saldo`
+  - Body: `{ "idConta": "c1" }`
+  - 200: `{ "id": "c1", "saldo": 100 }`
+  - 400: `{ "message": "<erro>" }`
+
 - POST `/contas`
   - Body: `{ "idConta": "c1", "saldoInicial": 100 }`
   - 201: `{ "id": "c1", "saldo": 100 }`
@@ -51,6 +56,8 @@ Endpoints
   - 400: `{ "message": "<erro>" }`
 
 Exemplos cURL
+- Saldo:
+  - `curl -X POST http://localhost:3000/saldo -H "Content-Type: application/json" -d '{"idConta":"c1"}'`
 - Criar conta:
   - `curl -X POST http://localhost:3000/contas -H "Content-Type: application/json" -d '{"idConta":"c1","saldoInicial":100}'`
 - Depósito:

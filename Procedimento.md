@@ -41,6 +41,17 @@ Requisitos
   },
   "item": [
     {
+      "name": "Saldo",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/saldo", "host": ["{{baseUrl}}"], "path": ["saldo"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\"\n}" }
+      }
+    },
+    {
       "name": "Criar Conta",
       "request": {
         "method": "POST",
@@ -92,6 +103,8 @@ Requisitos
 ```
 
 6) cURL — testes rapidos
+- Saldo:
+  - `curl -X POST http://localhost:3000/saldo -H "Content-Type: application/json" -d '{"idConta":"c1"}'`
 - Criar conta:
   - `curl -X POST http://localhost:3000/contas -H "Content-Type: application/json" -d '{"idConta":"c1","saldoInicial":100}'`
 - Deposito:
