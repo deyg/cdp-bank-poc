@@ -2,6 +2,48 @@ import { ContaRepositoryMemory } from '../../adapters/memory/ContaRepositoryMemo
 import { buildUseCases } from '../../core/usecases/buildUseCases.js';
 
 describe('Casos de Uso com ContaRepositoryMemory', () => {
+  test('CriarConta → cria conta com saldo padrão 0', async () => {
+    const repo = new ContaRepositoryMemory([]);
+    const { criarConta } = buildUseCases(repo);
+
+    const result = await criarConta.execute({ idConta: 'nova' });
+    expect(result).toEqual({ id: 'nova', saldo: 0 });
+
+    const persisted = await repo.buscarConta('nova');
+    expect(persisted).toEqual({ id: 'nova', saldo: 0 });
+  });
+
+  test('CriarConta → cria conta com saldoInicial > 0', async () => {
+    const repo = new ContaRepositoryMemory([]);
+    const { criarConta } = buildUseCases(repo);
+
+    const result = await criarConta.execute({ idConta: 'nova2', saldoInicial: 150 });
+    expect(result).toEqual({ id: 'nova2', saldo: 150 });
+    const persisted = await repo.buscarConta('nova2');
+    expect(persisted).toEqual({ id: 'nova2', saldo: 150 });
+  });
+
+  test('CriarConta → erro ao criar conta duplicada', async () => {
+    const repo = new ContaRepositoryMemory([{ id: 'dup', saldo: 10 }]);
+    const { criarConta } = buildUseCases(repo);
+    await expect(criarConta.execute({ idConta: 'dup', saldoInicial: 5 }))
+      .rejects.toThrow('Conta já existe');
+  });
+
+  test('CriarConta → validações de entrada', async () => {
+    const repo = new ContaRepositoryMemory([]);
+    const { criarConta } = buildUseCases(repo);
+
+    await expect(criarConta.execute({ saldoInicial: 0 }))
+      .rejects.toThrow('idConta é obrigatório');
+    await expect(criarConta.execute({ idConta: 'x', saldoInicial: -1 }))
+      .rejects.toThrow(RangeError);
+    await expect(criarConta.execute({ idConta: 'x', saldoInicial: NaN }))
+      .rejects.toThrow(TypeError);
+    await expect(criarConta.execute({ idConta: 'x', saldoInicial: '10' }))
+      .rejects.toThrow(TypeError);
+  });
+
   test('Depósito → saldo correto', async () => {
     const repo = new ContaRepositoryMemory([{ id: 'c1', saldo: 100 }]);
     const { deposito } = buildUseCases(repo);

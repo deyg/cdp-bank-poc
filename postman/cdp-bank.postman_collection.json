@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "CDP Bank POC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Criar Conta",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/contas", "host": ["{{baseUrl}}"], "path": ["contas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\",\n  \"saldoInicial\": 100\n}" }
+      }
+    },
+    {
+      "name": "Deposito",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/deposito", "host": ["{{baseUrl}}"], "path": ["deposito"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\",\n  \"valor\": 25\n}" }
+      }
+    },
+    {
+      "name": "Saque",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/saque", "host": ["{{baseUrl}}"], "path": ["saque"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\",\n  \"valor\": 10\n}" }
+      }
+    },
+    {
+      "name": "Transferencia",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/transferencia", "host": ["{{baseUrl}}"], "path": ["transferencia"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idOrigem\": \"c1\",\n  \"idDestino\": \"c2\",\n  \"valor\": 30\n}" }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ]
+}
+

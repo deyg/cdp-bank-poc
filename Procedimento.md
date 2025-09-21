@@ -25,9 +25,9 @@ Requisitos
 - `PGDATABASE=cdp_bank`, `PGSSL=false`
 
 4) Preparar dados iniciais
-- Criar contas diretamente no banco (exemplos):
-  - `docker exec -it cdp-bank-postgres psql -U postgres -d cdp_bank -c "INSERT INTO contas (id, saldo) VALUES ('c1', 100) ON CONFLICT (id) DO NOTHING;"`
-  - `docker exec -it cdp-bank-postgres psql -U postgres -d cdp_bank -c "INSERT INTO contas (id, saldo) VALUES ('c2', 50) ON CONFLICT (id) DO NOTHING;"`
+- Você pode criar contas via API ou direto no banco:
+  - Via API: `curl -X POST http://localhost:3000/contas -H "Content-Type: application/json" -d '{"idConta":"c1","saldoInicial":100}'`
+  - Via SQL: `docker exec -it cdp-bank-postgres psql -U postgres -d cdp_bank -c "INSERT INTO contas (id, saldo) VALUES ('c1', 100) ON CONFLICT (id) DO NOTHING;"`
 
 5) Colecao Postman (import)
 - Copie o JSON abaixo para um arquivo local, por exemplo `postman_cdp_bank_collection.json`.
@@ -40,6 +40,17 @@ Requisitos
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
+    {
+      "name": "Criar Conta",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/contas", "host": ["{{baseUrl}}"], "path": ["contas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"idConta\": \"c1\",\n  \"saldoInicial\": 100\n}" }
+      }
+    },
     {
       "name": "Deposito",
       "request": {
@@ -81,6 +92,8 @@ Requisitos
 ```
 
 6) cURL — testes rapidos
+- Criar conta:
+  - `curl -X POST http://localhost:3000/contas -H "Content-Type: application/json" -d '{"idConta":"c1","saldoInicial":100}'`
 - Deposito:
   - `curl -X POST http://localhost:3000/deposito -H "Content-Type: application/json" -d '{"idConta":"c1","valor":25}'`
 - Saque:
@@ -90,4 +103,3 @@ Requisitos
 
 Erros e respostas
 - Em caso de erro de negocio/validacao, a API responde `400` com `{ "message": "<descricao>" }`.
-

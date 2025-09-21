@@ -3,14 +3,25 @@ import { pathToFileURL } from 'node:url';
 import { createContaRepositoryPostgresFromEnv } from './adapters/postgres/ContaRepositoryPostgres.js';
 import { buildUseCases } from './core/usecases/buildUseCases.js';
 
-export async function createApp() {
+export async function createApp(deps = {}) {
   const app = fastify({ logger: true });
 
   // Injeta repositório Postgres e casos de uso
-  const repository = createContaRepositoryPostgresFromEnv();
+  const repository = deps.repository ?? createContaRepositoryPostgresFromEnv();
   const usecases = buildUseCases(repository);
 
   // Rotas
+  app.post('/contas', async (request, reply) => {
+    try {
+      const { idConta, saldoInicial } = request.body ?? {};
+      const result = await usecases.criarConta.execute({ idConta, saldoInicial });
+      return reply.code(201).send(result);
+    } catch (err) {
+      request.log.warn({ err }, 'Erro em /contas');
+      return reply.code(400).send({ message: err?.message ?? 'Bad Request' });
+    }
+  });
+
   app.post('/deposito', async (request, reply) => {
     try {
       const { idConta, valor } = request.body ?? {};

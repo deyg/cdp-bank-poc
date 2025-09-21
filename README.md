@@ -23,12 +23,18 @@ Conexão ao Postgres (variáveis)
 - `PGDATABASE=cdp_bank`
 - `PGSSL=false`
 
-Criação de conta (necessário antes de operar)
-- A API atual expõe apenas depósito/saque/transferência. Crie contas direto no banco:
-  - `INSERT INTO contas (id, saldo) VALUES ('c1', 100);`
-  - `INSERT INTO contas (id, saldo) VALUES ('c2', 50);`
+ Criação de conta
+ - POST `/contas`
+   - Body: `{ "idConta": "c1", "saldoInicial": 100 }` (opcional `saldoInicial`, padrão `0`)
+   - 201: `{ "id": "c1", "saldo": 100 }`
+   - 400: `{ "message": "<erro>" }`
 
 Endpoints
+- POST `/contas`
+  - Body: `{ "idConta": "c1", "saldoInicial": 100 }`
+  - 201: `{ "id": "c1", "saldo": 100 }`
+  - 400: `{ "message": "<erro>" }`
+
 - POST `/deposito`
   - Body: `{ "idConta": "c1", "valor": 25 }`
   - 200: `{ "id": "c1", "saldo": 125 }`
@@ -45,6 +51,8 @@ Endpoints
   - 400: `{ "message": "<erro>" }`
 
 Exemplos cURL
+- Criar conta:
+  - `curl -X POST http://localhost:3000/contas -H "Content-Type: application/json" -d '{"idConta":"c1","saldoInicial":100}'`
 - Depósito:
   - `curl -X POST http://localhost:3000/deposito -H "Content-Type: application/json" -d '{"idConta":"c1","valor":25}'`
 - Saque:
